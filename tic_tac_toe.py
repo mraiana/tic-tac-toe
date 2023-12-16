@@ -5,50 +5,50 @@ import sys
 pygame.init()
 
 #переменные
-WIDTH, HEIGHT = 300, 300
-LINE_WIDTH = 15
-GRID_SIZE = 3
-CELL_SIZE = WIDTH // GRID_SIZE
-BLUE = (0, 0, 255)
-GRAY = (169, 169, 169)
-WHITE = (255, 255, 255)
+width, height = 300, 300
+line_widht = 15
+grid_size = 3
+cell_size = width // grid_size
+blue = (0, 0, 255)
+gray = (169, 169, 169)
+white = (255, 255, 255)
 
 #окно для игры
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
+screen = pygame.display.set_mode((width, height))
 pygame.display.set_caption("Крестики-нолики")
 
 #создаем игровое поле
-board = [[' ' for _ in range(GRID_SIZE)] for _ in range(GRID_SIZE)]
+board = [[' ' for _ in range(grid_size)] for _ in range(grid_size)]
 turn = 'X'
 
 #функция рисования сетки
 def draw_grid():
-    for i in range(1, GRID_SIZE):
-        pygame.draw.line(screen, GRAY, (i * CELL_SIZE, 0), (i * CELL_SIZE, HEIGHT), LINE_WIDTH)
-        pygame.draw.line(screen, GRAY, (0, i * CELL_SIZE), (WIDTH, i * CELL_SIZE), LINE_WIDTH)
+    for i in range(1, grid_size):
+        pygame.draw.line(screen, gray, (i * cell_size, 0), (i * cell_size, height), line_widht)
+        pygame.draw.line(screen, gray, (0, i * cell_size), (width, i * cell_size), line_widht)
 
 #функция рисования крестиков и ноликов
 def draw_symbols():
-    for row in range(GRID_SIZE):
-        for col in range(GRID_SIZE):
+    for row in range(grid_size):
+        for col in range(grid_size):
             if board[row][col] == 'X': #крестики
-                pygame.draw.line(screen, GRAY, (col * CELL_SIZE, row * CELL_SIZE),
-                                 ((col + 1) * CELL_SIZE, (row + 1) * CELL_SIZE), LINE_WIDTH)
-                pygame.draw.line(screen, GRAY, ((col + 1) * CELL_SIZE, row * CELL_SIZE),
-                                 (col * CELL_SIZE, (row + 1) * CELL_SIZE), LINE_WIDTH)
+                pygame.draw.line(screen, gray, (col * cell_size, row * cell_size),
+                                 ((col + 1) * cell_size, (row + 1) * cell_size), line_widht)
+                pygame.draw.line(screen, gray, ((col + 1) * cell_size, row * cell_size),
+                                 (col * cell_size, (row + 1) * cell_size), line_widht)
             elif board[row][col] == 'O': #нолики
-                pygame.draw.circle(screen, WHITE, (col * CELL_SIZE + CELL_SIZE // 2, row * CELL_SIZE + CELL_SIZE // 2),
-                                   CELL_SIZE // 2 - LINE_WIDTH)
+                pygame.draw.circle(screen, white, (col * cell_size + cell_size // 2, row * cell_size + cell_size // 2),
+                                   cell_size // 2 - line_widht)
 
 #функция проверки победителя
 def check_winner():
     #проверка строк и столбца
-    for i in range(GRID_SIZE):
-        if all(board[i][j] == turn for j in range(GRID_SIZE)) or all(board[j][i] == turn for j in range(GRID_SIZE)):
+    for i in range(grid_size):
+        if all(board[i][j] == turn for j in range(grid_size)) or all(board[j][i] == turn for j in range(grid_size)):
             return True
 
     #проверка диагонали
-    if all(board[i][i] == turn for i in range(GRID_SIZE)) or all(board[i][GRID_SIZE - 1 - i] == turn for i in range(GRID_SIZE)):
+    if all(board[i][i] == turn for i in range(grid_size)) or all(board[i][grid_size - 1 - i] == turn for i in range(grid_size)):
         return True
 
     return False
@@ -62,8 +62,8 @@ while game:
             game = False
         elif event.type == pygame.MOUSEBUTTONDOWN:
             mouseX, mouseY = pygame.mouse.get_pos()
-            clicked_row = mouseY // CELL_SIZE
-            clicked_col = mouseX // CELL_SIZE
+            clicked_row = mouseY // cell_size
+            clicked_col = mouseX // cell_size
 
             #проверка пуста ли ячейка
             if board[clicked_row][clicked_col] == ' ':
@@ -73,7 +73,7 @@ while game:
                 if check_winner():
                     print(f'{turn} wins!')
                     running = False
-                elif all(board[i][j] != ' ' for i in range(GRID_SIZE) for j in range(GRID_SIZE)):
+                elif all(board[i][j] != ' ' for i in range(grid_size) for j in range(grid_size)):
                     print('It\'s a draw!')
                     game = False
                 else:
@@ -81,7 +81,7 @@ while game:
                     turn = 'O' if turn == 'X' else 'X'
 
     #рисуем фон и сетку
-    screen.fill(BLUE)
+    screen.fill(blue)
     draw_grid()
 
     #рисуем крестики и нолики
